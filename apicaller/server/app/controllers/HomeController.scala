@@ -4,6 +4,7 @@ import javax.inject._
 import play.api._
 import play.api.mvc._
 import play.api.libs.json._
+import play.Logger
 
 case class Echo(
     var data: String
@@ -37,6 +38,7 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
     val oReq = request.body.asJson
     val jsReq = oReq.getOrElse(JsString("null"))
     val data = (jsReq \ "data").getOrElse(JsString("no data")).as[String]
+    Logger.debug("data: " + data)
     val echo = Echo(data)
     Ok(Json.toJson(echo).toString())
   }
