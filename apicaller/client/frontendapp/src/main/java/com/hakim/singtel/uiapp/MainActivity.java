@@ -1,5 +1,7 @@
 package com.hakim.singtel.uiapp;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,7 +30,23 @@ public class MainActivity extends AppCompatActivity {
                 String szText = m_editText.getText().toString();
                 Log.d("frontendapp", "text is: " + szText);
                 m_textView.setText(szText);
+                openApiConsumerApp(szText);
             }
         });
+    }
+
+    public void openApiConsumerApp(String szText){
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.setClassName("com.hakim.singtel.apiconsumerapp", "com.hakim.singtel.apiconsumerapp.MainActivity");
+        sendIntent.putExtra(Intent.EXTRA_TEXT, szText);
+        try {
+            startActivity(sendIntent);
+        } catch (ActivityNotFoundException anfe) {
+            // user doesn't have apiconsumer app installed on his phone
+            Log.d("frontendapp", "activity not found exception");
+            Intent shareIntent = Intent.createChooser(sendIntent, "Please install apiconsumerapp");
+            startActivity(shareIntent);
+        }
     }
 }
