@@ -24,11 +24,11 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView m_textView;
 
-    private RequestQueue m_requestQueue;
+    private ApiManager m_apiManager = new ApiManager();
 
     private void initialize() {
-        m_requestQueue = Volley.newRequestQueue(this);
         m_textView = (TextView)findViewById(R.id.textView);
+        m_apiManager.initialize(this);
     }
 
     @Override
@@ -41,33 +41,21 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if ( intent != null ) {
             final String text = intent.getStringExtra(Intent.EXTRA_TEXT);
-
-            StringRequest request = new StringRequest(Request.Method.POST, Constant.SERVER_URL + Constant.ECHO_PATH, new Response.Listener<String>() {
+            HashMap<String, String> params = new HashMap<String, String>();
+            params.put("data", text);
+            String szJson = new JSONObject(params).toString();
+            m_apiManager.PostJsonAPIRequest(Constant.ECHO_PATH, szJson, new ApiManager.OnApiCallback() {
                 @Override
-                public void onResponse(String response) {
-                    Log.d("ApiConsumer", "response: " + response);
-                    m_textView.setText(response);
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e("ApiConsumer", "error: " + error.getMessage(), error);
-                    m_textView.setText(error.toString());
-                }
-            }) {
-                @Override
-                public byte[] getBody() {
-                    HashMap<String, String> params = new HashMap<String, String>();
-                    params.put("data", text);
-                    return new JSONObject(params).toString().getBytes();
+                public void success(String result) {
+                    m_textView.setText(result);
                 }
 
                 @Override
-                public String getBodyContentType() {
-                    return "application/json";
+                public void failed(Exception e) {
+                    m_textView.setText(e.toString());
                 }
-            };
-            m_requestQueue.add(request);
+            });
+
         }
     }
 }
