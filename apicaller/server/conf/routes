@@ -11,5 +11,7 @@ POST		/substract				   controllers.HomeController.substract
 POST		/multiply				   controllers.HomeController.multiply
 POST		/divide					   controllers.HomeController.divide
 
+GET		/getlocalizationfile		   controllers.LocalizationController.getdatafile
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

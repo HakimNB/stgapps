@@ -1,0 +1,33 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:hakim="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:context=".LocalizationMainActivity"
+    >
+
+        <TextView
+            android:id="@+id/targetText"
+            android:textColor="@android:color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btnEnglish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="English"/>
+        <Button
+            android:id="@+id/btnChinese"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chinese"/>
+        <Button
+            android:id="@+id/btnHindi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hindi"/>
+
+
+</LinearLayout>

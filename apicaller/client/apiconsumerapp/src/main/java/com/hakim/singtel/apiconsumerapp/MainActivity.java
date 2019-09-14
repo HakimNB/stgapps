@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void processCalculation(Bundle bundle) {
-        String szCommand = bundle.getString("command");
+        final String szCommand = bundle.getString("command");
         String szNum1 = bundle.getString("num1");
         String szNum2 = bundle.getString("num2");
 
@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void openUiApp(String szText){
+    public void openUiApp(final String szText){
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.setClassName("com.hakim.singtel.uiapp", "com.hakim.singtel.uiapp.MainActivity");

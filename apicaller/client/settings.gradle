@@ -1,1 +1,1 @@
-include ':frontendapp', ':apiconsumerapp'
+include ':frontendapp', ':apiconsumerapp', ':localizationapp'

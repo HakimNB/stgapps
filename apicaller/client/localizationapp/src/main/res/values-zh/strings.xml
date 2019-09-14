@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">localizationapp</string>
+    <string name="helloworld">你好，世界</string>
+    <string name="happy">快乐</string>
+    <string name="sad">伤心</string>
+    <string name="angry">愤怒</string>
+    <string name="bored">无聊</string>
+</resources>

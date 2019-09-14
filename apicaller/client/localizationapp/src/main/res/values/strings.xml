@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">localizationapp</string>
+
+    <!-- *keys should not be localized, the value of the *keys should point to the "real" string name -->
+    <!-- use the *keys as textresid key -->
+    <string name="helloworld_key">helloworld</string>
+    <string name="happy_key">happy</string>
+    <string name="sad_key">sad</string>
+    <string name="angry_key">angry</string>
+    <string name="bored_key">bored</string>
+
+
+    <string name="helloworld">Hello World</string>
+    <string name="happy">Happy</string>
+    <string name="sad">Sad</string>
+    <string name="angry">Angry</string>
+    <string name="bored">Bored</string>
+</resources>
