@@ -54,7 +54,7 @@ public class ApiManager {
 //        }
 //    }
 
-    public void PostJsonAPIRequest(String szApiEndpoint, final String szPayload, final OnApiCallback callback) {
+    public void PostJsonAPIRequest(final String szApiEndpoint, final String szPayload, final OnApiCallback callback) {
         if ( m_requestQueue == null ) {
             if ( callback != null ) {
                 callback.failed(new IllegalAccessException("Please call initialize first!"));
@@ -63,6 +63,8 @@ public class ApiManager {
         }
 
         String szUrl = Constant.SERVER_URL + szApiEndpoint;
+        LogManager.Debug(this.getClass().getName(), "PostJsonAPIRequest URL: " + szUrl);
+        LogManager.Debug(this.getClass().getName(), "PostJsonAPIRequest Payload: " + szPayload);
         StringRequest request = new StringRequest(Request.Method.POST, szUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

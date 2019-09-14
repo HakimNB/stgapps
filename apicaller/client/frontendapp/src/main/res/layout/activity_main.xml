@@ -24,6 +24,49 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Submit" />
+
+        <EditText
+            android:id="@+id/num1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number"
+            android:text="0" />
+
+        <EditText
+            android:id="@+id/num2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number"
+            android:text="0" />
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:rowCount="2">
+            <Button
+                android:id="@+id/btnAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add" />
+            <Button
+                android:id="@+id/btnSubstract"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Substract" />
+            <Button
+                android:id="@+id/btnMultiply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Multiply" />
+            <Button
+                android:id="@+id/btnDivide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Divide" />
+
+        </GridLayout>
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

@@ -49,6 +49,17 @@ object Echo {
   }
 }
 
+case class CalcResult (
+    var num1: Int,
+    var num2: Int,
+    var result: Int
+) {  
+}
+
+object CalcResult {
+  implicit val calcJsonFormat = Json.format[CalcResult]
+}
+
 /**
  * This controller creates an `Action` to handle HTTP requests to the
  * application's home page.
@@ -77,5 +88,45 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
     val callcount = Echo.getcallcount()
     val echo = Echo(data + " " + callcount, callcount)
     Ok(Json.toJson(echo).toString())
+  }
+  
+  def add() = Action { implicit request: Request[AnyContent] => 
+    val oReq = request.body.asJson
+    val jsReq = oReq.getOrElse(JsString("null"))
+    val num1 = (jsReq \ "num1").getOrElse(JsNumber(0)).as[String].toInt
+    val num2 = (jsReq \ "num2").getOrElse(JsNumber(0)).as[String].toInt
+    val result = CalcResult(num1, num2, num1 + num2)
+    Logger.debug("add: " + num1 + ", " + num2 + " result: " + result.result)
+    Ok(Json.toJson(result).toString())
+  }
+  
+  def substract() = Action { implicit request: Request[AnyContent] => 
+    val oReq = request.body.asJson
+    val jsReq = oReq.getOrElse(JsString("null"))
+    val num1 = (jsReq \ "num1").getOrElse(JsNumber(0)).as[String].toInt
+    val num2 = (jsReq \ "num2").getOrElse(JsNumber(0)).as[String].toInt
+    val result = CalcResult(num1, num2, num1 - num2)
+    Logger.debug("substract: " + num1 + ", " + num2 + " result: " + result.result)
+    Ok(Json.toJson(result).toString())
+  }
+  
+  def multiply() = Action { implicit request: Request[AnyContent] =>
+    val oReq = request.body.asJson
+    val jsReq = oReq.getOrElse(JsString("null"))
+    val num1 = (jsReq \ "num1").getOrElse(JsNumber(0)).as[String].toInt
+    val num2 = (jsReq \ "num2").getOrElse(JsNumber(0)).as[String].toInt
+    val result = CalcResult(num1, num2, num1 * num2)
+    Logger.debug("multiply: " + num1 + ", " + num2 + " result: " + result.result)
+    Ok(Json.toJson(result).toString())
+  }
+  
+  def divide() = Action { implicit request: Request[AnyContent] =>
+    val oReq = request.body.asJson
+    val jsReq = oReq.getOrElse(JsString("null"))
+    val num1 = (jsReq \ "num1").getOrElse(JsNumber(0)).as[String].toInt
+    val num2 = (jsReq \ "num2").getOrElse(JsNumber(0)).as[String].toInt
+    val result = CalcResult(num1, num2, num1 / num2)
+    Logger.debug("divide: " + num1 + ", " + num2 + " result: " + result.result)
+    Ok(Json.toJson(result).toString())
   }
 }

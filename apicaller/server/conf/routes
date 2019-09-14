@@ -6,6 +6,10 @@
 # An example controller showing a sample home page
 GET     /                           controllers.HomeController.index
 POST		/appendcount				   controllers.HomeController.appendcount
+POST		/add						   controllers.HomeController.add
+POST		/substract				   controllers.HomeController.substract
+POST		/multiply				   controllers.HomeController.multiply
+POST		/divide					   controllers.HomeController.divide
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
