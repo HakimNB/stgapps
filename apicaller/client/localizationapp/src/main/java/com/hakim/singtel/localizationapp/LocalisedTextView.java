@@ -2,7 +2,10 @@ package com.hakim.singtel.localizationapp;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -11,6 +14,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.Locale;
 
 /**
  * Created by hakimhauston on 14/9/19.
@@ -22,6 +27,15 @@ public class LocalisedTextView extends LinearLayout {
     private Button m_btnEnglish;
     private Button m_btnChinese;
     private Button m_btnHindi;
+
+    private String m_textKey;
+    private int m_iTextResId;
+
+    private enum LANGUAGE_SELECTION {
+        LANG_EN,
+        LANG_ZH,
+        LANG_HI,
+    }
 
     private String m_szLocalizationKey;
 
@@ -46,6 +60,41 @@ public class LocalisedTextView extends LinearLayout {
         initialize(attrs);
     }
 
+    private void changeTextToLang(LANGUAGE_SELECTION lang) {
+        String szLocalizedString = getStringFromAndroidResource(lang);
+        m_targetText.setText(szLocalizedString);
+    }
+
+    private Locale getLocaleFromLang(LANGUAGE_SELECTION lang) {
+        Locale locale = null;
+        switch ( lang ) {
+            case LANG_EN:
+                locale = new Locale("en");
+                break;
+            case LANG_ZH:
+                locale = new Locale("zh");
+                break;
+            case LANG_HI:
+                locale = new Locale("hi");
+                break;
+            default:
+                locale = new Locale("en");
+                break;
+        }
+        return locale;
+    }
+
+    private String getStringFromAndroidResource(LANGUAGE_SELECTION lang)
+    {
+        Locale locale = getLocaleFromLang(lang);
+        Configuration configuration = new Configuration();
+        configuration.setLocale(locale);
+        Context localizedContext = getContext().createConfigurationContext(configuration);
+        Resources resources = localizedContext.getResources();
+        String szLocalizedString = resources.getString(m_iTextResId);
+        return szLocalizedString;
+    }
+
     private void initialize(AttributeSet attrs) {
         View v = inflate(getContext(), R.layout.localised_text_view, this);
 
@@ -54,17 +103,38 @@ public class LocalisedTextView extends LinearLayout {
         m_btnChinese = (Button)v.findViewById(R.id.btnChinese);
         m_btnHindi = (Button)v.findViewById(R.id.btnHindi);
 
+        m_btnEnglish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeTextToLang(LANGUAGE_SELECTION.LANG_EN);
+            }
+        });
+
+        m_btnChinese.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeTextToLang(LANGUAGE_SELECTION.LANG_ZH);
+            }
+        });
+
+        m_btnHindi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeTextToLang(LANGUAGE_SELECTION.LANG_HI);
+            }
+        });
+
         if ( attrs == null ) {
             return;
         }
 
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.LocalisedTextView);
-        String szId = typedArray.getString(R.styleable.LocalisedTextView_textresid);
-        Log.d(this.getClass().getName(), "textresid: " + szId);
+        m_textKey = typedArray.getString(R.styleable.LocalisedTextView_textresid);
+        Log.d(this.getClass().getName(), "textresid: " + m_textKey);
 
-        int iResId = getResources().getIdentifier(szId, "string", getContext().getPackageName());
-        String szResValue = getResources().getString(iResId);
-        Log.d(this.getClass().getName(), "id: " + iResId + " value: " + szResValue);
+        m_iTextResId = getResources().getIdentifier(m_textKey, "string", getContext().getPackageName());
+        String szResValue = getResources().getString(m_iTextResId);
+        Log.d(this.getClass().getName(), "id: " + m_iTextResId + " value: " + szResValue);
         m_targetText.setText(szResValue);
 
 //        m_targetText.setText(szId);
