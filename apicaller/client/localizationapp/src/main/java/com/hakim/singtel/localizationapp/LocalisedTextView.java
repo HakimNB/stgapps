@@ -31,12 +31,6 @@ public class LocalisedTextView extends LinearLayout {
     private String m_textKey;
     private int m_iTextResId;
 
-    private enum LANGUAGE_SELECTION {
-        LANG_EN,
-        LANG_ZH,
-        LANG_HI,
-    }
-
     private String m_szLocalizationKey;
 
     private int m_iId;
@@ -60,39 +54,9 @@ public class LocalisedTextView extends LinearLayout {
         initialize(attrs);
     }
 
-    private void changeTextToLang(LANGUAGE_SELECTION lang) {
-        String szLocalizedString = getStringFromAndroidResource(lang);
+    private void changeTextToLang(LocalizationManager.LANGUAGE_SELECTION lang) {
+        String szLocalizedString = LocalizationManager.GetInstance().GetLocalizedString(lang, m_textKey);
         m_targetText.setText(szLocalizedString);
-    }
-
-    private Locale getLocaleFromLang(LANGUAGE_SELECTION lang) {
-        Locale locale = null;
-        switch ( lang ) {
-            case LANG_EN:
-                locale = new Locale("en");
-                break;
-            case LANG_ZH:
-                locale = new Locale("zh");
-                break;
-            case LANG_HI:
-                locale = new Locale("hi");
-                break;
-            default:
-                locale = new Locale("en");
-                break;
-        }
-        return locale;
-    }
-
-    private String getStringFromAndroidResource(LANGUAGE_SELECTION lang)
-    {
-        Locale locale = getLocaleFromLang(lang);
-        Configuration configuration = new Configuration();
-        configuration.setLocale(locale);
-        Context localizedContext = getContext().createConfigurationContext(configuration);
-        Resources resources = localizedContext.getResources();
-        String szLocalizedString = resources.getString(m_iTextResId);
-        return szLocalizedString;
     }
 
     private void initialize(AttributeSet attrs) {
@@ -106,21 +70,21 @@ public class LocalisedTextView extends LinearLayout {
         m_btnEnglish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                changeTextToLang(LANGUAGE_SELECTION.LANG_EN);
+                changeTextToLang(LocalizationManager.LANGUAGE_SELECTION.LANG_EN);
             }
         });
 
         m_btnChinese.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                changeTextToLang(LANGUAGE_SELECTION.LANG_ZH);
+                changeTextToLang(LocalizationManager.LANGUAGE_SELECTION.LANG_ZH);
             }
         });
 
         m_btnHindi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                changeTextToLang(LANGUAGE_SELECTION.LANG_HI);
+                changeTextToLang(LocalizationManager.LANGUAGE_SELECTION.LANG_HI);
             }
         });
 

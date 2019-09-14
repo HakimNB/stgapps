@@ -12,10 +12,15 @@ import java.util.Locale;
 
 public class LocalizationMainActivity extends AppCompatActivity {
 
-//    public TextView m_textTarget;
-//    public Button m_btnChinese;
-
     public LocalisedTextView m_textView;
+
+    private ApiManager m_apiManager = new ApiManager();
+    private LocalizationManager m_locManager = null;
+
+    private static LocalizationMainActivity m_instance = null;
+    public static LocalizationMainActivity getInstance() { return m_instance; }
+
+    private String m_szLocalizationFile = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,27 +28,35 @@ public class LocalizationMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_localization_main);
 
         m_textView = (LocalisedTextView)findViewById(R.id.ltv);
-//        m_textTarget = (TextView)findViewById(R.id.helloworld);
-//        m_btnChinese = (Button)findViewById(R.id.btnChinese);
-//
-//        m_btnChinese.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                String szChinese = getResources().getString(R.string.helloworld);
-//                szChinese = getStringByLocale(R.string.helloworld, "zh");
-//                Log.d(this.getClass().getName(), "STRING: " + szChinese);
-//                m_textTarget.setText(szChinese);
-//            }
-//        });
+
+        m_apiManager.initialize(this);
+
+        m_locManager = new LocalizationManager(this);
+
+        m_instance = this;
+
+        loadLocalizationFile();
     }
 
-    public String getStringByLocale(int id, String locale) {
-        Configuration configuration = this.getResources().getConfiguration();
-        Log.d(this.getClass().getName(), "PRE LOCALE: " + configuration.locale.toString());
-        Locale loc = new Locale(locale);
-        configuration.setLocale(loc);
-        Log.d(this.getClass().getName(), "LOCALE: " + loc.toString());
-        Log.d(this.getClass().getName(), "POST LOCALE: " + configuration.locale.toString());
-        return createConfigurationContext(configuration).getResources().getString(id);
+    public String GetLocalizationFile() {
+        return m_szLocalizationFile;
     }
+
+    private void loadLocalizationFile() {
+        // for big file, might need to stream or cache to local sqlite
+        m_apiManager.GetJsonAPIRequest(Constant.LOC_PATH, "", new ApiManager.OnApiCallback() {
+            @Override
+            public void success(String result) {
+                LogManager.Debug(this.getClass().getName(), "get localization file success: " + result);
+                m_szLocalizationFile = result;
+                m_locManager.Initialize(m_szLocalizationFile);
+            }
+
+            @Override
+            public void failed(Exception e) {
+                LogManager.Error(this.getClass().getName(), "get localization file failed", e);
+            }
+        });
+    }
+
 }

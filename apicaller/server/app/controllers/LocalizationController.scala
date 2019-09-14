@@ -34,12 +34,13 @@ class LocalizationController @Inject()(cc: ControllerComponents) extends Abstrac
    */
   def getdatafile() = Action { implicit request: Request[AnyContent] =>
     val result: List[LocalizationEntry] = List(
-        LocalizationEntry("helloworld", "Hello World", "你好，世界", "नमस्ते दुनिया"),
-        LocalizationEntry("happy", "Happy", "快乐", "खुश"),
-        LocalizationEntry("sad", "Sad", "伤心", "दुखी"),
-        LocalizationEntry("angry", "Angry", "愤怒", "गगुस्साा"),
-        LocalizationEntry("bored", "Bored", "无聊", "ऊब"),
+        LocalizationEntry("helloworld", "Hello World - R", "你好，世界 - R", "नमस्ते दुनिया - R"),
+        LocalizationEntry("happy", "Happy - R", "快乐 - R", "खुश - R"),
+        LocalizationEntry("sad", "Sad - R", "伤心 - R", "दुखी - R"),
+        LocalizationEntry("angry", "Angry - R", "愤怒 - R", "गगुस्साा - R"),
+        LocalizationEntry("bored", "Bored - R", "无聊 - R", "ऊब - R"),
     )
+    Logger.debug("LocalizationController.getdatafile")
     val resJsons: JsValue = Json.toJson(result)
     Ok(resJsons.toString)
   }
