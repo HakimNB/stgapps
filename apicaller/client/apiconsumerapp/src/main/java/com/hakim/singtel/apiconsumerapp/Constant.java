@@ -7,5 +7,5 @@ package com.hakim.singtel.apiconsumerapp;
 public class Constant {
     public static final String SERVER_URL = "http://10.0.2.2:9000";
 
-    public static final String ECHO_PATH = "/appenddate";
+    public static final String ECHO_PATH = "/appendcount";
 }
