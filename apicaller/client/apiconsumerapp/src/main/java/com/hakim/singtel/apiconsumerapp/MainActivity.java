@@ -2,6 +2,7 @@ package com.hakim.singtel.apiconsumerapp;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,39 +28,12 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
 
     private TextView m_textView;
-    private AlertDialog m_alertDialog;
 
     private ApiManager m_apiManager = new ApiManager();
 
     private void initialize() {
         m_textView = (TextView)findViewById(R.id.textView);
         m_apiManager.initialize(this);
-    }
-
-    public void showAlert(String szMessage)
-    {
-        // show popup
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setTitle("Result")
-                .setMessage(szMessage);
-
-        DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int code) {
-                dismissAlert();
-            }
-        };
-        builder.setPositiveButton("OK", (DialogInterface.OnClickListener) onClickListener);
-        m_alertDialog = builder.create();
-        m_alertDialog.show();
-
-    }
-
-    private void dismissAlert()
-    {
-        if ( m_alertDialog != null ) {
-            m_alertDialog.dismiss();
-        }
     }
 
     @Override
@@ -72,7 +46,11 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if ( intent != null ) {
             final String text = intent.getStringExtra(Intent.EXTRA_TEXT);
-//            showAlert(text);
+
+            if ( text == null || text.length() == 0 ) {
+                return;
+            }
+
             HashMap<String, String> params = new HashMap<String, String>();
             params.put("data", text);
             String szJson = new JSONObject(params).toString();
@@ -80,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
             loadingIndicator.setMessage("Loading from API Server");
             loadingIndicator.setCancelable(false);
             loadingIndicator.show();
+
             m_apiManager.PostJsonAPIRequest(Constant.ECHO_PATH, szJson, new ApiManager.OnApiCallback() {
                 @Override
                 public void success(String result) {
@@ -90,7 +69,8 @@ public class MainActivity extends AppCompatActivity {
                         JSONObject jsonObject = new JSONObject(result);
                         String data = jsonObject.getString("data");
                         LogManager.Debug(this.getClass().getName(), "data: " + data);
-                        showAlert(data);
+//                        showAlert(data);
+                        openUiApp(data);
                     }
                     catch ( Exception e ) {
                         LogManager.Error(this.getClass().getName(), e.getMessage(), e);
@@ -104,6 +84,21 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+        }
+    }
+
+    public void openUiApp(String szText){
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.setClassName("com.hakim.singtel.uiapp", "com.hakim.singtel.uiapp.MainActivity");
+        sendIntent.putExtra(Intent.EXTRA_TEXT, szText);
+        try {
+            startActivity(sendIntent);
+        } catch (ActivityNotFoundException anfe) {
+            // user doesn't have apiconsumer app installed on his phone
+            LogManager.Debug(this.getClass().getName(), "activity not found");
+            Intent shareIntent = Intent.createChooser(sendIntent, "Please install uiapp");
+            startActivity(shareIntent);
         }
     }
 }
