@@ -6,13 +6,48 @@
     android:layout_height="match_parent"
     tools:context="com.hakim.singtel.localizationapp.LocalizationMainActivity">
 
-    <com.hakim.singtel.localizationapp.LocalisedTextView
-        hakim:textresid="@string/bored_key"
-        android:id="@+id/ltv"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+            <com.hakim.singtel.localizationapp.LocalisedTextView
+                hakim:textresid="@string/helloworld_key"
+                android:id="@+id/ltv0"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </com.hakim.singtel.localizationapp.LocalisedTextView>
+            <com.hakim.singtel.localizationapp.LocalisedTextView
+                hakim:textresid="@string/happy_key"
+                android:id="@+id/ltv1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </com.hakim.singtel.localizationapp.LocalisedTextView>
+            <com.hakim.singtel.localizationapp.LocalisedTextView
+                hakim:textresid="@string/sad_key"
+                android:id="@+id/ltv2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </com.hakim.singtel.localizationapp.LocalisedTextView>
+            <com.hakim.singtel.localizationapp.LocalisedTextView
+                hakim:textresid="@string/angry_key"
+                android:id="@+id/ltv3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </com.hakim.singtel.localizationapp.LocalisedTextView>
+            <com.hakim.singtel.localizationapp.LocalisedTextView
+                hakim:textresid="@string/bored_key"
+                android:id="@+id/ltv4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </com.hakim.singtel.localizationapp.LocalisedTextView>
+        </LinearLayout>
 
-    </com.hakim.singtel.localizationapp.LocalisedTextView>
+    </ScrollView>
+
     <!--
     <LinearLayout
         android:layout_width="match_parent"

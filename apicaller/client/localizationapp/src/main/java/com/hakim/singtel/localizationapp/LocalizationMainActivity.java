@@ -9,10 +9,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.Locale;
+import java.util.Vector;
 
 public class LocalizationMainActivity extends AppCompatActivity {
 
-    public LocalisedTextView m_textView;
+//    public LocalisedTextView m_textView;
+
+    private Vector<LocalisedTextView> m_textViews = new Vector<LocalisedTextView>();
 
     private ApiManager m_apiManager = new ApiManager();
     private LocalizationManager m_locManager = null;
@@ -27,7 +30,16 @@ public class LocalizationMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_localization_main);
 
-        m_textView = (LocalisedTextView)findViewById(R.id.ltv);
+//        m_textView = (LocalisedTextView)findViewById(R.id.ltv);
+        int iIndex = 0;
+        LocalisedTextView textView = null;
+        do {
+            String szResName = "ltv" + iIndex;
+            int iId = getResources().getIdentifier(szResName, "id", getPackageName());
+            textView = (LocalisedTextView)findViewById(iId);
+            LogManager.Debug(this.getClass().getName(), szResName + " is null ? " + (textView == null));
+            iIndex++;
+        } while ( textView != null );
 
         m_apiManager.initialize(this);
 
